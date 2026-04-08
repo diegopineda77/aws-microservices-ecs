@@ -1,0 +1,19 @@
+{
+    "IamInstanceProfile": {
+        "Arn": "arn:aws:iam::427778498090:instance-profile/ecsInstanceRole"
+    },
+    "BlockDeviceMappings": [
+        {
+            "DeviceName": "/dev/xvda",
+            "Ebs": {
+                "VolumeSize": 30
+            }
+        }
+    ],
+    "ImageId": "ami-0f989e78a92d5f420",
+    "InstanceType": "c7i-flex.large",
+    "UserData": "<>",
+    "SecurityGroupIds": [
+        "sg-0bb82e50f73d54da2"
+    ]
+}

@@ -1,0 +1,97 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The template used to create an ECS Service from the ECS Console.",
+  "Parameters": {
+    "ECSClusterName": {
+      "Type": "String",
+      "Default": "ECS-proj1"
+    },
+    "ECSServiceName": {
+      "Type": "String",
+      "Default": "web"
+    },
+    "SecurityGroupIDs": {
+      "Type": "CommaDelimitedList",
+      "Default": ""
+    },
+    "SubnetIDs": {
+      "Type": "CommaDelimitedList",
+      "Default": ""
+    },
+    "VpcID": {
+      "Type": "String",
+      "Default": ""
+    },
+    "LoadBalancerName": {
+      "Type": "String",
+      "Default": "ecs-webcatdog"
+    }
+  },
+  "Resources": {
+    "ECSService": {
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": "ECS-proj1",
+        "TaskDefinition": "arn:aws:ecs:us-east-1:427778498090:task-definition/webdef:1",
+        "LaunchType": "EC2",
+        "ServiceName": "web",
+        "SchedulingStrategy": "REPLICA",
+        "DesiredCount": 2,
+        "AvailabilityZoneRebalancing": "ENABLED",
+        "LoadBalancers": [
+          {
+            "ContainerName": "web",
+            "ContainerPort": 80,
+            "LoadBalancerName": {
+              "Ref": "AWS::NoValue"
+            },
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:427778498090:targetgroup/web/4ec43b642c0d72d8"
+          }
+        ],
+        "DeploymentConfiguration": {
+          "DeploymentCircuitBreaker": {
+            "Enable": true,
+            "Rollback": true
+          },
+          "Strategy": "ROLLING",
+          "MaximumPercent": 200,
+          "MinimumHealthyPercent": 100
+        },
+        "DeploymentController": {
+          "Type": "ECS"
+        },
+        "ServiceConnectConfiguration": {
+          "Enabled": false
+        },
+        "PlacementStrategies": [
+          {
+            "Field": "attribute:ecs.availability-zone",
+            "Type": "spread"
+          },
+          {
+            "Field": "instanceId",
+            "Type": "spread"
+          }
+        ],
+        "PlacementConstraints": [],
+        "Tags": [],
+        "EnableECSManagedTags": true,
+        "EnableExecuteCommand": false
+      }
+    }
+  },
+  "Outputs": {
+    "ClusterName": {
+      "Description": "The cluster used to create the service.",
+      "Value": {
+        "Ref": "ECSClusterName"
+      }
+    },
+    "ECSService": {
+      "Description": "The created service.",
+      "Value": {
+        "Ref": "ECSService"
+      }
+    }
+  }
+}
