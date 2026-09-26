@@ -1,6 +1,6 @@
 # aws-microservices-ecs
 The project was developed to demonstrate architectural design, the process of implementing Infrastructure as Code (IaC) in the AWS cloud, and the containerized deployment of microservices.
-
+![Texto alternativo](Project 1 - Containers ECS Fargate EC2.png)
 This project includes:
 
 Detailed Project Documentation: Project 1 - Containers ECS Fargate EC2 - en/sp.pdf
